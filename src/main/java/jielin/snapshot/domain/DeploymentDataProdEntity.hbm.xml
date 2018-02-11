@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="jielin.snapshot.domain.DeploymentDataProdEntity" table="deployment_data_prod" schema="wade">
+        <id name="id">
+            <column name="ID" sql-type="int(20)"/>
+        </id>
+        <property name="title">
+            <column name="Title" sql-type="varchar(255)" not-null="true"/>
+        </property>
+        <property name="starter">
+            <column name="Starter" sql-type="varchar(255)" not-null="true"/>
+        </property>
+        <property name="finisher">
+            <column name="Finisher" sql-type="varchar(255)" not-null="true"/>
+        </property>
+        <property name="startDate">
+            <column name="StartDate" sql-type="datetime" not-null="true"/>
+        </property>
+        <property name="taskState">
+            <column name="TaskState" sql-type="varchar(255)" not-null="true"/>
+        </property>
+        <property name="finishDate">
+            <column name="FinishDate" sql-type="datetime" not-null="true"/>
+        </property>
+        <property name="effort">
+            <column name="Effort" sql-type="varchar(255)" not-null="true"/>
+        </property>
+        <property name="diguid">
+            <column name="DIGUID" sql-type="varchar(255)" not-null="true"/>
+        </property>
+        <property name="diEngine">
+            <column name="DIEngine" sql-type="varchar(255)" not-null="true"/>
+        </property>
+        <property name="location">
+            <column name="Location" sql-type="varchar(255)" not-null="true"/>
+        </property>
+        <property name="parentDeploymentId">
+            <column name="ParentDeploymentID" sql-type="varchar(255)" not-null="true"/>
+        </property>
+        <property name="type">
+            <column name="Type" sql-type="varchar(255)" not-null="true"/>
+        </property>
+        <property name="buildNumber">
+            <column name="BuildNumber" sql-type="varchar(255)" not-null="true"/>
+        </property>
+        <property name="buildPath">
+            <column name="BuildPath" sql-type="varchar(255)" not-null="true"/>
+        </property>
+        <property name="deploymentRoot">
+            <column name="DeploymentRoot" sql-type="varchar(255)" not-null="true"/>
+        </property>
+        <property name="toolset">
+            <column name="Toolset" sql-type="varchar(255)" not-null="true"/>
+        </property>
+        <property name="templateName">
+            <column name="TemplateName" sql-type="varchar(255)" not-null="true"/>
+        </property>
+        <property name="settingsFile">
+            <column name="SettingsFile" sql-type="varchar(255)" not-null="true"/>
+        </property>
+        <property name="tenantId">
+            <column name="TenantID" sql-type="varchar(255)" not-null="true"/>
+        </property>
+        <property name="serviceTreeGuid">
+            <column name="ServiceTreeGUID" sql-type="varchar(255)" not-null="true"/>
+        </property>
+        <property name="approvedBy">
+            <column name="ApprovedBy" sql-type="varchar(255)" not-null="true"/>
+        </property>
+        <property name="submittedBy">
+            <column name="SubmittedBy" sql-type="varchar(255)" not-null="true"/>
+        </property>
+        <property name="buildReplicationId">
+            <column name="BuildReplicationID" sql-type="varchar(255)" not-null="true"/>
+        </property>
+        <property name="rtoid">
+            <column name="RTOID" sql-type="varchar(255)" not-null="true"/>
+        </property>
+        <property name="rtoApprovedBy">
+            <column name="RTOApprovedBy" sql-type="varchar(255)" not-null="true"/>
+        </property>
+        <property name="rtoSubmittedBy">
+            <column name="RTOSubmittedBy" sql-type="varchar(255)" not-null="true"/>
+        </property>
+        <property name="updatedTime">
+            <column name="UpdatedTime" sql-type="varchar(255)" not-null="true"/>
+        </property>
+    </class>
+</hibernate-mapping>

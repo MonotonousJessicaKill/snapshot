@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="jielin.snapshot.domain.WarmDataEntity" table="warm_data" schema="wade">
+        <id name="id">
+            <column name="ID" sql-type="int(20)"/>
+        </id>
+        <property name="title">
+            <column name="Title" sql-type="varchar(80)" length="80"/>
+        </property>
+        <property name="description">
+            <column name="Description" sql-type="varchar(40)" length="40" not-null="true"/>
+        </property>
+        <property name="type">
+            <column name="Type" sql-type="varchar(80)" length="80" not-null="true"/>
+        </property>
+        <property name="approvedDate">
+            <column name="ApprovedDate" sql-type="datetime" not-null="true"/>
+        </property>
+        <property name="createdDate">
+            <column name="CreatedDate" sql-type="datetime" not-null="true"/>
+        </property>
+        <property name="kpi">
+            <column name="KPI" sql-type="float(40,3)" precision="40" scale="3" not-null="true"/>
+        </property>
+        <property name="tag">
+            <column name="Tag" sql-type="varchar(40)" length="40" not-null="true"/>
+        </property>
+        <property name="updatetime">
+            <column name="Updatetime" sql-type="datetime" not-null="true"/>
+        </property>
+    </class>
+</hibernate-mapping>
