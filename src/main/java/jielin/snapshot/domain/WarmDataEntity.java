@@ -12,7 +12,7 @@ public class WarmDataEntity {
     private String type;
     private Timestamp approvedDate;
     private Timestamp createdDate;
-    private Double kpi;
+    private Float kpi;
     private String tag;
     private Timestamp updatetime;
 
@@ -78,11 +78,11 @@ public class WarmDataEntity {
 
     @Basic
     @Column(name = "KPI", nullable = true, precision = 3)
-    public Double getKpi() {
+    public Float getKpi() {
         return kpi;
     }
 
-    public void setKpi(Double kpi) {
+    public void setKpi(Float kpi) {
         this.kpi = kpi;
     }
 

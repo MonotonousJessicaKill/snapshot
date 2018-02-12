@@ -33,7 +33,7 @@ function getAndPushJson(key, page) {
         key="all";
     }
     $.ajax({
-        url: "http://localhost:8081/wade/search/" + key + "/" + page,
+        url: "/wade/search/" + key + "/" + page,
         type: "get",
         data: {},
         success: function (data, page) {

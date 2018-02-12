@@ -13,7 +13,7 @@ public class PfgoldDataEntity {
     private Timestamp approvedDate;
     private Timestamp lastChangeDate;
     private String lastChangePerson;
-    private Double spendTime;
+    private Float spendTime;
     private String tag;
     private Timestamp updateTime;
 
@@ -89,11 +89,11 @@ public class PfgoldDataEntity {
 
     @Basic
     @Column(name = "SpendTime", nullable = true, precision = 2)
-    public Double getSpendTime() {
+    public Float getSpendTime() {
         return spendTime;
     }
 
-    public void setSpendTime(Double spendTime) {
+    public void setSpendTime(Float spendTime) {
         this.spendTime = spendTime;
     }
 
