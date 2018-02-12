@@ -2,6 +2,7 @@ package jielin.snapshot;
 
 import jielin.snapshot.common.Result;
 import jielin.snapshot.common.ResultEnum;
+import jielin.snapshot.handle.VisualException;
 
 public class ResultUtil {
     public static Result success(Object data){
@@ -22,6 +23,13 @@ public class ResultUtil {
             result.setCode(ResultEnum.UnKNOW_ERROR.getCode());
             result.setMsg(ResultEnum.UnKNOW_ERROR.getMsg());
             return result;
+
+    }
+    public static Result error(VisualException e){
+        Result result=new Result();
+        result.setCode(e.getCode());
+        result.setMsg(e.getMessage());
+        return result;
 
     }
 

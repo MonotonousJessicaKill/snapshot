@@ -22,8 +22,15 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public Result searchDeploymentByTitle(String key, int pageNo) {
+        Page<DeploymentDataProdEntity> page;
+          if ("all".equals(key)){
+              page=deploymentDao.findAll(new PageRequest(pageNo, 10,
+                      new Sort(Sort.Direction.DESC, "id")));
+              return ResultUtil.success(page);
+          }
 
-        Page<DeploymentDataProdEntity> page = deploymentDao.findAll(new Specification<DeploymentDataProdEntity>() {
+
+         page = deploymentDao.findAll(new Specification<DeploymentDataProdEntity>() {
             @Override
             public Predicate toPredicate(Root<DeploymentDataProdEntity> root,
                                          CriteriaQuery<?> criteriaQuery,

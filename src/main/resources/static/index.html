@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 90%;width: 98%">
+<head>
+    <title>v1</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="./css/main.css" rel="stylesheet">
+</head>
+<body style="height:100%">
+<p>
+    <button type="button" class="btn btn-primary btn-lg btn-block" style="margin-bottom: 0">snapshot.0</button>
+</p>
+<div class="row" style="height: 100%">
+    <div class="col-md-2" style="height: 100%">
+        <ul class="nav nav-pills nav-stacked">
+            <li role="presentation" class="active disabled"><a href="#" style="text-align: center">general</a></li>
+            <li role="presentation" ><a id="searchPage-btn"  class="bg-info" href="#" style="text-align: center" >search deployment</a></li>
+            <li role="presentation"  ><a id="powerbiPage-btn" class="bg-info" href="#" style="text-align: center">powerbi statics</a></li>
+        </ul>
+
+        <a class="btn bg-success btn-block" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample"
+        style="margin-top: 50px">
+            todo
+        </a>
+        <div class="collapse" id="collapseExample">
+            <div class="well">
+                <ul class="nav nav-pills nav-stacked">
+                    <li role="presentation"><a href="#" style="text-align: center">scripts</a></li>
+                    <li role="presentation"><a href="#" style="text-align: center">document</a></li>
+                    <li role="presentation"><a href="#" style="text-align: center">others</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10" style="height: 100%">
+        <iframe id="iframea" src="common.html" scrolling="false" >
+            not support.
+        </iframe>
+    </div>
+</div>
+</body>
+<script src="./js/jquery-3.3.1.min.js"></script>
+<script src="./js/bootstrap.min.js"></script>
+<script>
+    $(function () {
+        $("#searchPage-btn").click(function () {
+            var ifr = document.getElementById('iframea');
+            var win = ifr.window || ifr.contentWindow;
+            win.moveUp();
+        });
+        $("#powerbiPage-btn").click(function () {
+            var ifr = document.getElementById('iframea');
+            var win = ifr.window || ifr.contentWindow;
+            win.moveDown();
+        });
+    });
+    function switchSuccess() {
+
+            // $("#searchPage-btn").toggleClass("btn-info");
+            // $("#powerbiPage-btn").toggleClass("btn-info");
+
+    }
+</script>
+</html>
