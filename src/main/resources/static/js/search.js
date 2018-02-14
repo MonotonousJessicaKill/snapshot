@@ -57,8 +57,8 @@ function insertData(data, page) {
         u.setStorage(item.id, item);
         $("tbody").append(
             "<tr>" + "<td><a class='forID ' data-toggle=\"modal\" data-target=\"#myModal-1\"> " + item.id + "</a></td>" + "<td>" + item.title
-            + "</td>" + "<td>" + item.startDate + "</td>"
-            + "<td>" + item.finishDate + "</td>" + "</tr>");
+            + "</td>" + "<td>" + new Date(item.startDate) + "</td>"
+            + "<td>" + new Date(item.finishDate) + "</td>" + "</tr>");
     }
     // 插入分页
     $(".pagination").html("");
