@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" style="height: 90%;width: 98%">
 <head>
-    <title>v1</title>
+    <title>Azure WADE</title>
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link href="./css/main.css" rel="stylesheet">
 </head>
@@ -15,24 +15,28 @@
             <li role="presentation" class="active disabled"><a href="#" style="text-align: center">General</a></li>
             <li role="presentation" ><a id="searchPage-btn"  class="bg-info" href="#" style="text-align: center" >Search</a></li>
             <li role="presentation"  ><a id="powerbiPage-btn" class="bg-info" href="#" style="text-align: center">WADE Dashboard</a></li>
+            <li role="presentation" ><a id="pro-btn"  class="bg-info" href="#" style="text-align: center" >Service Monitor</a></li>
+            <li role="presentation" ><a target="_blank" class="bg-info" href="http://waps-18:8080/tfs/DefaultCollection/Script/_workitems#_a=query&path=Shared%20Queries%2FProblem%20Backlog" style="text-align: center" >Problem Management</a></li>
+            <li role="presentation" ><a target="_blank" class="bg-info" href="http://waps-18:8080/tfs/DefaultCollection/Script/_workitems#path=Shared+Queries%2FWADE-+TSG&_a=query" style="text-align: center" >Trouble Shooting Guide</a></li>
         </ul>
 
         <a class="btn bg-success btn-block" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample"
         style="margin-top: 50px">
-            Todo
+            Quick Link
         </a>
         <div class="collapse" id="collapseExample">
             <div class="well">
                 <ul class="nav nav-pills nav-stacked">
-                    <li role="presentation"><a href="#" style="text-align: center">page#1</a></li>
-                    <li role="presentation"><a href="#" style="text-align: center">page#2</a></li>
-                    <li role="presentation"><a href="#" style="text-align: center">page#3</a></li>
+                    <li role="presentation"><a href="https://jitaccess.security.core.chinacloudapi.cn/WorkFlowTempAccess.aspx" target="_blank" style="text-align: center">JIT Access</a></li>
+                    <li role="presentation"><a href="https://icm.ad.msft.net/" target="_blank" style="text-align: center">Incident Management</a></li>
+                    <li role="presentation"><a href="http://aka.ms/jarvis-dsts-mc" target="_blank" style="text-align: center">Jarvis</a></li>
+                    <li role="presentation"><a href="https://portal.azure.cn/" target="_blank" style="text-align: center">Azure Portal</a></li>
                 </ul>
             </div>
         </div>
     </div>
     <div class="col-md-10" style="height: 100%">
-        <iframe id="iframea" src="common.html" scrolling="false" style="opacity: 0.7" >
+        <iframe id="iframea" src="common.html" scrolling="false" style="opacity: 0.9" >
             not support.
         </iframe>
     </div>
@@ -45,12 +49,17 @@
         $("#searchPage-btn").click(function () {
             var ifr = document.getElementById('iframea');
             var win = ifr.window || ifr.contentWindow;
-            win.moveUp();
+            win.moveTofirst();
         });
         $("#powerbiPage-btn").click(function () {
             var ifr = document.getElementById('iframea');
             var win = ifr.window || ifr.contentWindow;
-            win.moveDown();
+            win.moveTosecond();
+        });
+        $("#pro-btn").click(function () {
+            var ifr = document.getElementById('iframea');
+            var win = ifr.window || ifr.contentWindow;
+            win.moveTothird();
         });
     });
     function switchSuccess() {
