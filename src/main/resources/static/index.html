@@ -7,7 +7,12 @@
 </head>
 <body style="height:100%;background-image: url(1.jpg)">
 <p>
-    <button type="button" class="btn btn-primary btn-lg btn-block" style="margin-bottom: 0">Azure SRE Integration Management Platform 1.0</button>
+    <button id="btn-title" type="button" class="btn btn-primary btn-lg btn-block" style="margin-bottom: 0" >
+        <a class="btn btn-info" role="button" data-toggle="collapse" href="#collapseAlert" aria-expanded="false" aria-controls="collapseExample" style="margin-right: 22%">
+            <span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
+        </a>
+        <span style="margin-right: 10%">Azure SRE Integration Management Platform 1.0</span>
+    </button>
 </p>
 <div class="row" style="height: 100%">
     <div class="col-md-2" style="height: 100%">
@@ -36,6 +41,14 @@
         </div>
     </div>
     <div class="col-md-10" style="height: 100%">
+        <div id="collapseAlert" class="alert-my">
+            <div class="alert alert-success" role="alert">
+                uccesssuccesssuccesssuccesssuccesssuccess
+            </div>
+            <div class="alert alert-info" role="alert">info</div>
+            <div class="alert alert-warning" role="alert">warning</div>
+            <div class="alert alert-danger" role="alert">danger</div>
+        </div>
         <iframe id="iframea" src="common.html" scrolling="false" style="opacity: 0.9" >
             not support.
         </iframe>
