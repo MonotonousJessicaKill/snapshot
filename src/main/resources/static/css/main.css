@@ -17,3 +17,10 @@ iframe{
 .forID{
     cursor: pointer;
 }
+.alert-my{
+    position: absolute;
+    z-index: 999;
+}
+#btn-title:hover{
+    background-color: #337AB7;
+}
