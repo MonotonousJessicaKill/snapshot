@@ -1,3 +1,4 @@
+
 $(function () {
 
     // 模态框注册事件
@@ -8,15 +9,22 @@ $(function () {
 
     // 为分页按钮注册事件
     $("nav").on('click', 'a', function (event) {
-
-        page = eval(event.target.innerHTML -1);
-        getAndPushJson($("#key").val(), page);
+        var page = 0;
+        var prev = null;
+        if(event.target.innerHTML == "&gt;&gt;+10"){
+            page = eval($(".pagination a:eq(10)").html());
+            prev = false;
+        }else if(event.target.innerHTML == "-10&lt;&lt;"){
+            page = eval($(".pagination a:eq(1)").html() -1);
+            prev = true;
+        }else page = eval(event.target.innerHTML -1);
+        getAndPushJson($("#key").val(), page,prev);
     });
 
     // 为表格获取submit注册事件
     $("#sub-btn").click(function () {
         var key = $("#key").val();
-        getAndPushJson(key, 0);
+        getAndPushJson(key, 0,false);
     });
 
     $("tbody").on('click', 'a', function (event) {
@@ -28,7 +36,7 @@ $(function () {
 });
 
 // 表格数据ajax
-function getAndPushJson(key, page) {
+function getAndPushJson(key, page, prev) {
     if(key == ""){
         key="all";
     }
@@ -36,9 +44,9 @@ function getAndPushJson(key, page) {
         url: "/wade/search/" + key + "/" + page,
         type: "get",
         data: {},
-        success: function (data, page) {
+        success: function (data) {
             var data = data.data;
-            insertData(data);
+            insertData(data,page,prev);
         },
         dataType: "json",
         error: function (data) {
@@ -47,9 +55,8 @@ function getAndPushJson(key, page) {
     });
 }
 
-function insertData(data, page) {
+function insertData(data,page,prev) {
     $('#myModal').modal('hide');
-    var totalPages = data.totalPages;
     var content = data.content;
     $('tbody').html("");
     for (var i = 0; i < content.length; i++) {
@@ -61,15 +68,37 @@ function insertData(data, page) {
             + "<td>" + new Date(item.finishDate) + "</td>" + "</tr>");
     }
     // 插入分页
-    $(".pagination").html("");
-    for (var j = 1; j <= totalPages; j++) {
 
-        $(".pagination").append("<li><a>" + j + "</a></li>");
+    if(page !== 0 && prev == true){
+        $(".pagination").html("");
+        $(".pagination").append("<li><a>" + '-10&lt;&lt;' + "</a></li>");
+        for (var j = page-9; j <= page; j++) {
+
+            $(".pagination").append("<li><a>" + j + "</a></li>");
+
+        }
+        $(".pagination").append("<li><a>" + "&gt;&gt;+10" + "</a></li>");
     }
+    if(prev == false){
+
+        $(".pagination").html("");
+        $(".pagination").append("<li><a>" + '-10&lt;&lt;' + "</a></li>");
+        for (var j = page+1; j <= page+10; j++) {
+
+            $(".pagination").append("<li><a>" + j + "</a></li>");
+
+        }
+        $(".pagination").append("<li><a>" + "&gt;&gt;+10" + "</a></li>");
+    }
+
+
     // 设置当前请求页为.active
-    $("li").removeClass("active");
-    $("li:eq(" + (page + 1) + ")").addClass("active");
+    $(".pagination li").removeClass("active");
+    $(".pagination li:eq(" + (page + 1) + ")").addClass("active");
+
     $("#tb-area").removeClass("hidden");
+
+
 }
 
 
@@ -80,7 +109,7 @@ function onKeyDown(event) {
     }
     if (e && e.keyCode == 13) { // enter 键
         var key = $("#key").val();
-        getAndPushJson(key, 0);
+        getAndPushJson(key, 0, false);
     }
 
 }
