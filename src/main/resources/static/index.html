@@ -41,9 +41,10 @@
         </div>
     </div>
     <div class="col-md-10" style="height: 100%">
-        <div id="collapseAlert" class="alert-my">
+        <!-- 完成后设为打开时为显示 -->
+        <div id="collapseAlert" class="alert-my hide">
             <div class="alert alert-success" role="alert">
-                uccesssuccesssuccesssuccesssuccesssuccess
+                excited
             </div>
             <div class="alert alert-info" role="alert">info</div>
             <div class="alert alert-warning" role="alert">warning</div>
@@ -58,6 +59,28 @@
 <script src="./js/jquery-3.3.1.min.js"></script>
 <script src="./js/bootstrap.min.js"></script>
 <script>
+    $(function () {
+        $("#searchPage-btn").click(function () {
+            var ifr = document.getElementById('iframea');
+            var win = ifr.window || ifr.contentWindow;
+            win.moveTofirst();
+        });
+        $("#powerbiPage-btn").click(function () {
+            var ifr = document.getElementById('iframea');
+            var win = ifr.window || ifr.contentWindow;
+            win.moveTosecond();
+        });
+        $("#pro-btn").click(function () {
+            var ifr = document.getElementById('iframea');
+            var win = ifr.window || ifr.contentWindow;
+            win.moveTothird();
+        });
+    });
+    function switchSuccess() {
 
+        // $("#searchPage-btn").toggleClass("btn-info");
+        // $("#powerbiPage-btn").toggleClass("btn-info");
+
+    }
 </script>
 </html>
