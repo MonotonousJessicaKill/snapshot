@@ -35,11 +35,8 @@ public class UserManController {
 
     }
     @GetMapping(value = "/users")
-    public Result users(HttpSession session){
-        Object obj=session.getAttribute("logged");
-        if (obj ==null || !(boolean)obj){
-            return ResultUtil.error("please log in first.");
-        }
+    public Result getAllUsers(HttpSession session){
+
         return userService.findAll();
     }
 

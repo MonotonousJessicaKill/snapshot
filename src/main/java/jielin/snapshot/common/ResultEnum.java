@@ -1,7 +1,7 @@
 package jielin.snapshot.common;
 
 public enum ResultEnum {
-
+    UNAUTHORIZED(110,"Unauthorized"),
     UnKNOW_ERROR(-1,"未知错误"),
     PRIMARY_ERROR(404,"未搜索到资源"),
     SUCCESS(200,"success");

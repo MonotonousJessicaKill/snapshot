@@ -1,9 +1,11 @@
 package jielin.snapshot.aspect;
 
+import jielin.snapshot.common.SuperUser;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -14,9 +16,12 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 public class HttpAspect {
     private final static Logger logger = LoggerFactory.getLogger(HttpAspect.class);
-    private int requestCount=0;
+    @Autowired
+    private SuperUser superUser;
+
     @Before("execution(public * jielin.snapshot.controller.*.*(..))")
     public void visitBefore(JoinPoint joinPoint) {
+        logger.info("site viewed:================================================="+superUser.siteCount++ +"times.");
         ServletRequestAttributes attributes = (ServletRequestAttributes)
                 RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
@@ -30,13 +35,11 @@ public class HttpAspect {
     @After("execution(public * jielin.snapshot.controller.*.*(..))")
     public void visitAfter() {
 
-        logger.info("handle request successful :"+requestCount+" times");
     }
 
     @AfterReturning(returning = "object", pointcut =
             "execution(public * jielin.snapshot.controller.*.*(..))")
     public void afterReturn(Object object) {
-
         logger.info("response={}", object);
     }
 

@@ -1,8 +1,6 @@
 package jielin.snapshot.common;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -10,6 +8,7 @@ import org.springframework.stereotype.Component;
 public class SuperUser {
     private String username;
     private String password;
+    public Integer siteCount =0;
 
     public String getPassword() {
         return password;
@@ -25,5 +24,13 @@ public class SuperUser {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public Integer getSiteCount() {
+        return siteCount;
+    }
+
+    public void setSiteCount(Integer siteCount) {
+        this.siteCount = siteCount;
     }
 }

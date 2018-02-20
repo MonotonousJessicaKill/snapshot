@@ -9,7 +9,6 @@ $(function () {
         $('#myTab li').removeClass('active');
         $(e.target).parent().addClass('active');
         var content=$(e.target).html();
-        alert(content+"" === "Users");
         //发出后台请求
         if("Users" == content){
             getUserInfo();
@@ -32,14 +31,19 @@ $(function () {
 });
 
 function postNewUser() {
-
     $.ajax({
             url:"user/add",
             type: "post",
             data:$('#addUser').serialize(),
             success:function (data) {
                 $("#addUser").toggleClass("hidden");
+                if(data.code == 110){
+                    $("#user-table tbody").html("Unauthorized, please login correctly first!");
+                    alert("failed : "+data.msg);
+                    return;
+                }
                 alert("succeeded.");
+                getUserInfo();
             },
             error:function (data) {
             alert("failed:"+data.msg);
@@ -53,7 +57,7 @@ function getUserInfo() {
         type: "get",
         success: function (data) {
             if(data.code!=200){
-                alert("Failed.")
+                alert("Failed : "+data.msg)
                 return;
             }
             insertUserInfo(data.data)
@@ -67,11 +71,11 @@ function getUserInfo() {
 
 function insertUserInfo(data) {
     var items=data;
-    alert(items);
     if(items == null)return;
     var table=$("#user-table tbody");
     table.html("");
     for(var i=1;i<=items.length;i++){
+        var item=items[i-1];
         table.append(
             "<tr>" + "<td>" + i + "</a></td>" + "<td>" + item.username
             + "</td>" + "<td>" + item.role + "</td>"
@@ -87,9 +91,10 @@ function login() {
         success: function (data) {
             var status=data.code;
             if(status !== 200){
-                $("#home").html("Login Failed!")
+                $("#home").html("<h3>Login Failed!</h3><br>" +
+                    "<a class='btn btn-primary' onclick='location.reload()'>re-login</a>")
             }else {
-                $("#home").html("Successfully Logged in.");
+                $("#home").html("<h3>Successfully Logged in.<br>You can go on with next parts.</h3>");
             }
         },
         dataType: "json",

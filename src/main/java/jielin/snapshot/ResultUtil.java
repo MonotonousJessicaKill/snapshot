@@ -27,7 +27,7 @@ public class ResultUtil {
     }
     public static Result error(String msg){
         Result result=new Result();
-        result.setCode(ResultEnum.UnKNOW_ERROR.getCode());
+        result.setCode(ResultEnum.UNAUTHORIZED.getCode());
         result.setMsg(msg);
         return result;
 
