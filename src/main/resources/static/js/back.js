@@ -79,7 +79,7 @@ function insertUserInfo(data) {
         table.append(
             "<tr>" + "<td>" + i + "</a></td>" + "<td>" + item.username
             + "</td>" + "<td>" + item.role + "</td>"
-            + "<td>" + "<a><span class='glyphicon glyphicon-pencil'></span></a>" + "</td>" + "</tr>");
+            + "<td>" + "<a class='btn btn-light'><span class='glyphicon glyphicon-pencil'></span></a>" + "</td>" + "</tr>");
     }
 }
 
