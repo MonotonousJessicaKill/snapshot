@@ -50,11 +50,10 @@
     </div>
     <div class="col-md-10" style="height: 100%">
         <!-- 完成后设为打开时为显示 -->
-        <div id="collapseAlert" class="alert-my hide">
+        <div id="collapseAlert" class="alert-my hide" style="width: 25%">
             <span class="glyphicon glyphicon-chevron-up" aria-hidden="true" style="margin-left: 30px;
                          color: #bc3dff"></span>
-
-            <div class="alert alert-warning" role="alert">warning</div>
+            <div id="alert-area"></div>
 
         </div>
 
@@ -83,12 +82,34 @@
             var win = ifr.window || ifr.contentWindow;
             win.moveTothird();
         });
+
+        getNotifiaions();
+
     });
-    function switchSuccess() {
-
-        // $("#searchPage-btn").toggleClass("btn-info");
-        // $("#powerbiPage-btn").toggleClass("btn-info");
-
+    function getNotifiaions() {
+        $.ajax({
+            url: "note/notes/3",
+            type: "get",
+            success: function (data) {
+                if(data.code!=200){
+                    alert("Failed : "+data.msg)
+                    return;
+                }
+                var items=data.data;
+                if(items == null)return;
+                var aa=$("#alert-area");
+                for(var i=0;i<items.length;i++){
+                    var item =items[i];
+                    aa.append(
+                        "<div class='alert alert-warning' role='alert' style='100%'>"+item.description+"</div>"
+                    );
+                }
+            },
+            dataType: "json",
+            error: function (data) {
+                // do nothing
+            }
+        });
     }
 </script>
 </html>

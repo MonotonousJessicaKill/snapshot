@@ -26,6 +26,7 @@ public class UserManController {
 
             session.setAttribute("logged",true);
             session.setAttribute("username",username);
+
             session.setMaxInactiveInterval(1000*60*30);
             return ResultUtil.success("login successfully");
         } else {
@@ -35,7 +36,7 @@ public class UserManController {
 
     }
     @GetMapping(value = "/users")
-    public Result getAllUsers(HttpSession session){
+    public Result getAllUsers(){
 
         return userService.findAll();
     }

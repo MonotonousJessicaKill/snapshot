@@ -12,8 +12,8 @@ $(function () {
         //发出后台请求
         if("Users" == content){
             getUserInfo();
-        }else if(content == "Message"){
-
+        }else if(content == "Settings"){
+            getNotes();
         }else {
 
         }
@@ -27,8 +27,33 @@ $(function () {
     $('#addUser button').click(function () {
         postNewUser();
     });
+    $("#add-msg button").click(function () {
+        postMsg();
+    });
 
 });
+
+function postMsg() {
+    $.ajax({
+        url:"note/add",
+        type: "post",
+        data:$('#add-msg').serialize(),
+        success:function (data) {
+
+            if(data.code !== 200){
+                $("#note-table tbody").html("Unauthorized, please login correctly first!");
+                alert("failed : "+data.msg);
+                return;
+            }
+            $("#add-msg input").val("");
+            alert("succeeded.");
+            getNotes();
+        },
+        error:function (data) {
+            alert("failed:"+data.msg);
+        }
+    });
+}
 
 function postNewUser() {
     $.ajax({
@@ -43,12 +68,45 @@ function postNewUser() {
                     return;
                 }
                 alert("succeeded.");
+                $("#addUser input").val("");
                 getUserInfo();
+
             },
             error:function (data) {
             alert("failed:"+data.msg);
         }
     });
+}
+function getNotes() {
+    $.ajax({
+        url: "note/notes",
+        type: "get",
+        success: function (data) {
+            if(data.code!=200){
+                alert("Failed : "+data.msg)
+                return;
+            }
+            insertNotes(data.data)
+        },
+        dataType: "json",
+        error: function (data) {
+            // do nothing
+        }
+    });
+}
+
+function insertNotes(data) {
+    var items=data;
+    if(items == null)return;
+    var table=$("#note-table tbody");
+    table.html("");
+    for(var i=1;i<=items.length;i++){
+        var item=items[i-1];
+        table.append(
+            "<tr>" + "<td>" + i + "</a></td>" + "<td>" + item.description
+            + "</td>" + "<td>" + new Date(item.createdDate) + "</td>"
+            + "<td>" + new Date(item.expiredDate) + "</td>" + "</tr>");
+    }
 }
 
 function getUserInfo() {
@@ -68,6 +126,7 @@ function getUserInfo() {
         }
     });
 }
+
 
 function insertUserInfo(data) {
     var items=data;

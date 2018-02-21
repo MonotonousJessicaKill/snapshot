@@ -21,7 +21,8 @@ public class PermAspect {
     private final static Logger logger = LoggerFactory.getLogger(PermAspect.class);
     @Autowired
     SuperUser superUser;
-    @Pointcut("execution(public * jielin.snapshot.controller.backend.UserManController.*User*(..))")
+    @Pointcut("(execution(public * jielin.snapshot.controller.backend.UserManController.*User*(..))) " +
+            "|| (execution(public * jielin.snapshot.controller.backend.NoteController.*Note*(..)))")
     public void loggingIn() {
 
     }
