@@ -25,8 +25,11 @@ public class UserServiceImpl implements UserService {
        UserEntity userEntity= userDao.findOne(new Specification<UserEntity>() {
             @Override
             public Predicate toPredicate(Root<UserEntity> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
-                criteriaBuilder.equal(root.get("username"),username);
-                Predicate equal= criteriaBuilder.and(criteriaBuilder.equal(root.get("password"),password));
+
+                Predicate equal= criteriaBuilder.and(
+                        criteriaBuilder.equal(root.get("username"),username)
+                        ,criteriaBuilder.equal(root.get("password"),password)
+                );
                 criteriaQuery.where(equal);
                 return null;
             }

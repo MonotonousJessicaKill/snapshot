@@ -162,3 +162,16 @@ function login() {
         }
     })
 }
+
+
+function onKeyDown(event) {
+    var e = event || window.event || arguments.callee.caller.arguments[0];
+    if (e && e.keyCode == 27) { // 按 Esc
+        // do nothing
+    }
+    if (e && e.keyCode == 13) { // enter 键
+
+        $(e.target).parents(" form").find("button").click();
+    }
+
+}
