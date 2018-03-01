@@ -54,4 +54,20 @@ public class NoteServiceImpl implements NoteService{
                 },new Sort(Sort.Direction.DESC, "id")
         ));
     }
+
+    public Result getNotes(){
+        return ResultUtil.success(noteDao.findAll(
+                new Specification<NoteEntity>() {
+                    @Override
+                    public Predicate toPredicate(Root<NoteEntity> root, CriteriaQuery<?> criteriaQuery,
+                                                 CriteriaBuilder criteriaBuilder) {
+                        Calendar cal=Calendar.getInstance();
+                        cal.setTime(new Date());
+                        Predicate p=criteriaBuilder.greaterThanOrEqualTo(root.get("expiredDate"),cal.getTime());
+                        criteriaQuery.where(p);
+                        return null;
+                    }
+                },new Sort(Sort.Direction.DESC, "id")
+        ));
+    }
 }

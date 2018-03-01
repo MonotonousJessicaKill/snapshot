@@ -104,8 +104,8 @@ function insertNotes(data) {
         var item=items[i-1];
         table.append(
             "<tr>" + "<td>" + i + "</a></td>" + "<td>" + item.description
-            + "</td>" + "<td>" + new Date(item.createdDate) + "</td>"
-            + "<td>" + new Date(item.expiredDate) + "</td>" + "</tr>");
+            + "</td>" + "<td>" + (new Date(item.createdDate)).toLocaleString() + "</td>"
+            + "<td>" + (new Date(item.expiredDate)).toLocaleString() + "</td>" + "</tr>");
     }
 }
 
