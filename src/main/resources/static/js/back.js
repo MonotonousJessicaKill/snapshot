@@ -175,3 +175,26 @@ function onKeyDown(event) {
     }
 
 }
+
+function runUtils(e,name) {
+    $.ajax({
+        url: "utils/run",
+        type: "post",
+        data: {"script" : name},
+        success: function (data) {
+            var status=data.code;
+            if(status !== 200){
+                alert("not allowed!")
+                return
+            }else {
+                $(e.target).css("btn-success");
+
+                $(e.target).after("<div class='alert alert-success' role='alert'>"+data.data+"</div>")
+            }
+        },
+        dataType: "json",
+        error: function (data) {
+            // do nothing
+        }
+    })
+}
