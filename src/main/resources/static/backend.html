@@ -7,7 +7,8 @@
     <link href="./css/main.css" rel="stylesheet">
 </head>
 <body>
-<div type="button" class="btn btn-primary btn-lg btn-block" style="margin-bottom: 5px;padding-bottom: 0;padding-top: 10px;">
+<div type="button" class="btn btn-primary btn-lg btn-block"
+     style="margin-bottom: 5px;padding-bottom: 0;padding-top: 10px;">
     <span style="margin-right: 14%">Azure SRE Integration Management Platform 1.0</span>
     <p style="text-align: right;font-size: 15px;margin-top: 0;margin-bottom: 0;padding-bottom: 0">
         Microsoft Azure 由<i>世纪互联</i>&nbsp;&reg;&nbsp;运营
@@ -17,12 +18,12 @@
 <div class="col-md-10">
 
     <!-- Nav tabs -->
-    <ul id="myTab" class="nav nav-tabs" role="tablist">
+    <ul id="myTab" class="nav nav-tabs" role="tablist" style="margin: 3px auto">
         <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab"
                                                   data-toggle="tab">Login</a></li>
         <li role="presentation">
-            <a  href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Users</a></li>
-        <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a>
+            <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Users</a></li>
+        <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Tools</a>
         </li>
         <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a>
         </li>
@@ -42,7 +43,8 @@
                 <div class="form-group">
                     <label for="password" class="col-sm-2 control-label">Password</label>
                     <div class="col-sm-10">
-                        <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+                        <input type="password" class="form-control" name="password" id="password"
+                               placeholder="Password">
                     </div>
                 </div>
                 <div class="form-group">
@@ -101,27 +103,54 @@
                     <input type="radio" name="role" id="inlineRadio2" value="user"> user
                 </label>
                 <br>
-                <button type="button" class="btn btn-primary">Submit</button>
+                <button type="button" class="btn btn-primary" style="margin: 10px auto">Submit</button>
             </form>
 
         </div>
+
         <!-- 第3个管理页面 -->
+
         <div role="tabpanel" class="tab-pane " id="messages">
-            <ul id="utils" class="list-group" style="margin: 5% auto">
-                <li class="list-group-item list-group-item-success"><i>Weekly Subscription Creation Report</i></li>
-                <li style="margin: 5px auto;">
-                    <button type="button" class="btn btn-primary" onclick="runUtils(event,'SubscriptionScript')">RUN</button>
-                </li>
-                <li class="list-group-item list-group-item-info">Monthly Certificates Creation Report</li>
-                <li style="margin: 5px auto;">
-                    <button type="button" class="btn btn-primary" onclick="runUtils(event,'CertScript')">RUN</button>
-                </li>
+            <div class="col-md-5">
+                <h2>Tools Shortcut</h2>
+                <ul id="utils" class="list-group" style="margin: 5% auto">
 
-                <li class="list-group-item list-group-item-warning" style="margin: 5px auto">Monthly KPI Report</li>
+                    <li class="list-group-item list-group-item-success" style="margin: 0;">
+                        <h3 style="text-align: center">Weekly Subscription Creation Report</h3>
+                        <button type="button" class="btn btn-success" onclick="runUtils(event,'SubscriptionScript')">
+                            RUN SCRIPT
+                        </button>
+                    </li>
 
-                <li class="list-group-item list-group-item-danger" style="margin: 5px auto">4th</li>
-            </ul>
+                    <li class="list-group-item list-group-item-info" style="margin: 20px 0">
+                        <h3 style="text-align: center">Monthly Certificates Creation Report</h3>
+                        <button type="button"  class="btn btn-info" onclick="runUtils(event,'CertScript')"
+                        style="margin-left: 10%"
+                        >
+                            RUN SCRIPT
+                        </button>
+                    </li>
 
+                    <li class="list-group-item list-group-item-success" style="margin: 0">
+                        <h3 style="text-align: center">Monthly KPI Report</h3>
+                        <button type="button" class="btn btn-success" onclick="" style="margin-left: 20%">
+                            RUN SCRIPT
+                        </button>
+                    </li>
+
+                    <li class="list-group-item list-group-item-info" style="margin: 20px 0">
+                        <h3 style="text-align: center">4th</h3>
+                        <button type="button" class="btn btn-info" onclick="" style="margin-left: 30%">
+                            RUN SCRIPT
+                        </button>
+                    </li>
+
+                </ul>
+            </div>
+            <div class="col-md-2"></div>
+            <div class="col-md-5">
+
+            </div>
         </div>
         <!-- 第4个管理页面 -->
         <div role="tabpanel" class="tab-pane " id="settings">
@@ -141,14 +170,14 @@
                 <tfoot>
                 </tfoot>
             </table>
-            <form id="add-msg">
-                <h3>New Note</h3>
+            <form id="add-msg" style="width:80%;margin: 2% auto">
+                <h3>======New Note======</h3>
                 <h4>Description:</h4>
                 <div class="form-group" style="width: 40%;">
                     <textarea class="form-control" name="msg" rows="3"></textarea>
                 </div>
                 <h4>Days:</h4>
-                <input type="number" name="expired" min="1" max="7" />
+                <input type="number" name="expired" min="1" max="7"/>
                 <br>
                 <button type="button" class="btn btn-primary" style="margin-top: 5px; ">OK</button>
             </form>
