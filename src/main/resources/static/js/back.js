@@ -197,7 +197,7 @@ function runUtils(e, name) {
                 } else {
                     $(e.target).after(
                         "<div  style='color: #b2a7ff'>REQUEST HANDLED<br>DETAILS: "
-                        + data.data );
+                        + data.data +"<br>Please Check Your Outlook Inbox</div>");
                 }
             }
         },

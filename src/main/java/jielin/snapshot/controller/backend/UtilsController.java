@@ -17,7 +17,6 @@ public class UtilsController {
 
     @PostMapping(value = "/run")
     public Result runLocalScripts(@Param("script")String script){
-        System.out.println(script);
         if(script == null){
             return ResultUtil.notFund();
         }
