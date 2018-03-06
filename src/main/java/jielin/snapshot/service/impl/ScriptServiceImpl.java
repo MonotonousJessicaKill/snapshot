@@ -14,8 +14,6 @@ public class ScriptServiceImpl implements jielin.snapshot.service.ScriptService{
             process = Runtime.getRuntime().exec(command);
             int code=process.waitFor();
             if(code != 0){
-                System.out.println(command);
-                System.out.println(code);
                 return ResultUtil.success("Script execution Failed! it may caused by script internal error.");
             }
             return ResultUtil.success("Execution Success!");

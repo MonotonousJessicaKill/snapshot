@@ -1,5 +1,6 @@
 package jielin.snapshot.controller.backend;
 
+import jielin.snapshot.ResultUtil;
 import jielin.snapshot.common.Result;
 import jielin.snapshot.service.ScriptService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class UtilsController {
     public Result runLocalScripts(@Param("script")String script){
         System.out.println(script);
         if(script == null){
-            return null;
+            return ResultUtil.notFund();
         }
         return scriptService.runScript(script);
     }

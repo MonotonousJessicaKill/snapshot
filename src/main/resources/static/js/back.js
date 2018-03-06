@@ -8,18 +8,18 @@ $(function () {
         e.preventDefault();
         $('#myTab li').removeClass('active');
         $(e.target).parent().addClass('active');
-        var content=$(e.target).html();
+        var content = $(e.target).html();
         //发出后台请求
-        if("Users" == content){
+        if ("Users" == content) {
             getUserInfo();
-        }else if(content == "Settings"){
+        } else if (content == "Settings") {
             getNotes();
-        }else {
+        } else {
 
         }
         $(this).tab('show');
     });
-    
+
     // +User
     $("#addUser-btn").click(function () {
         $("#addUser").toggleClass("hidden");
@@ -35,55 +35,56 @@ $(function () {
 
 function postMsg() {
     $.ajax({
-        url:"note/add",
+        url: "note/add",
         type: "post",
-        data:$('#add-msg').serialize(),
-        success:function (data) {
+        data: $('#add-msg').serialize(),
+        success: function (data) {
 
-            if(data.code !== 200){
+            if (data.code !== 200) {
                 $("#note-table tbody").html("Unauthorized, please login correctly first!");
-                alert("failed : "+data.msg);
+                alert("failed : " + data.msg);
                 return;
             }
             $("#add-msg input").val("");
             alert("succeeded.");
             getNotes();
         },
-        error:function (data) {
-            alert("failed:"+data.msg);
+        error: function (data) {
+            alert("failed:" + data.msg);
         }
     });
 }
 
 function postNewUser() {
     $.ajax({
-            url:"user/add",
-            type: "post",
-            data:$('#addUser').serialize(),
-            success:function (data) {
-                $("#addUser").toggleClass("hidden");
-                if(data.code == 110){
-                    $("#user-table tbody").html("Unauthorized, please login correctly first!");
-                    alert("failed : "+data.msg);
-                    return;
-                }
-                alert("succeeded.");
-                $("#addUser input").val("");
-                getUserInfo();
+        url: "user/add",
+        type: "post",
+        data: $('#addUser').serialize(),
+        success: function (data) {
+            $("#addUser").toggleClass("hidden");
+            if (data.code == 110) {
+                $("#user-table tbody").html("Unauthorized, please login correctly first!");
+                alert("failed : " + data.msg);
+                return;
+            }
+            alert("succeeded.");
+            $("#addUser input").val("");
+            getUserInfo();
 
-            },
-            error:function (data) {
-            alert("failed:"+data.msg);
+        },
+        error: function (data) {
+            alert("failed:" + data.msg);
         }
     });
 }
+
 function getNotes() {
     $.ajax({
         url: "note/notes",
         type: "get",
         success: function (data) {
-            if(data.code!=200){
-                alert("Failed : "+data.msg)
+            if (data.code != 200) {
+                alert("Failed : " + data.msg)
                 return;
             }
             insertNotes(data.data)
@@ -96,12 +97,12 @@ function getNotes() {
 }
 
 function insertNotes(data) {
-    var items=data;
-    if(items == null)return;
-    var table=$("#note-table tbody");
+    var items = data;
+    if (items == null) return;
+    var table = $("#note-table tbody");
     table.html("");
-    for(var i=1;i<=items.length;i++){
-        var item=items[i-1];
+    for (var i = 1; i <= items.length; i++) {
+        var item = items[i - 1];
         table.append(
             "<tr>" + "<td>" + i + "</a></td>" + "<td>" + item.description
             + "</td>" + "<td>" + (new Date(item.createdDate)).toLocaleString() + "</td>"
@@ -114,8 +115,8 @@ function getUserInfo() {
         url: "user/users",
         type: "get",
         success: function (data) {
-            if(data.code!=200){
-                alert("Failed : "+data.msg)
+            if (data.code != 200) {
+                alert("Failed : " + data.msg)
                 return;
             }
             insertUserInfo(data.data)
@@ -129,12 +130,12 @@ function getUserInfo() {
 
 
 function insertUserInfo(data) {
-    var items=data;
-    if(items == null)return;
-    var table=$("#user-table tbody");
+    var items = data;
+    if (items == null) return;
+    var table = $("#user-table tbody");
     table.html("");
-    for(var i=1;i<=items.length;i++){
-        var item=items[i-1];
+    for (var i = 1; i <= items.length; i++) {
+        var item = items[i - 1];
         table.append(
             "<tr>" + "<td>" + i + "</a></td>" + "<td>" + item.username
             + "</td>" + "<td>" + item.role + "</td>"
@@ -148,11 +149,11 @@ function login() {
         type: "post",
         data: $('#login-form').serialize(),
         success: function (data) {
-            var status=data.code;
-            if(status !== 200){
+            var status = data.code;
+            if (status !== 200) {
                 $("#home").html("<h3>Login Failed!</h3><br>" +
                     "<a class='btn btn-primary' onclick='location.reload()'>re-login</a>")
-            }else {
+            } else {
                 $("#home").html("<h3>Successfully Logged in.<br>You can go on with next parts.</h3>");
             }
         },
@@ -176,20 +177,28 @@ function onKeyDown(event) {
 
 }
 
-function runUtils(e,name) {
+function runUtils(e, name) {
     $.ajax({
         url: "utils/run",
         type: "post",
-        data: {"script" : name},
+        data: {"script": name},
         success: function (data) {
-            var status=data.code;
-            if(status !== 200){
+            var status = data.code;
+            if (status !== 200) {
                 alert("not allowed!")
                 return
-            }else {
-                $(e.target).css("btn-success");
-
-                $(e.target).after("<div class='alert alert-success' role='alert'>"+data.data+"</div>")
+            } else {
+                var msg = data.data;
+                if (msg !== "Execution Success!") {
+                    $(e.target).after(
+                        "<div style='color: #ff4532'>REQUEST HANDLED<br>DETAILS: "
+                        + data.data +
+                        "<br>NOTE: There may be some exception in script.</div>");
+                } else {
+                    $(e.target).after(
+                        "<div  style='color: #b2a7ff'>REQUEST HANDLED<br>DETAILS: "
+                        + data.data );
+                }
             }
         },
         dataType: "json",
