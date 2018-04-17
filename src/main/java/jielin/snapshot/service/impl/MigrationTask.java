@@ -73,7 +73,7 @@ public class MigrationTask {
         JedisUtil.close(jedis);
     }
 
-    @Scheduled(cron="")
+    @Scheduled(cron="0 0 7 18 4 * *")
     public void executeInitRedis(){
         List<DeploymentDataProdEntity> list =
                 dao.findAll(new Sort(Sort.Direction.ASC,"id"));
