@@ -7,6 +7,7 @@ import redis.clients.jedis.JedisPool;
 public class JedisUtil {
     @Autowired
     private static JedisPool jedisPool;
+    private static int gretestId;
 
     public static Jedis getConn(){
         return jedisPool.getResource();
@@ -15,4 +16,11 @@ public class JedisUtil {
         jedis.close();
     }
 
+    public static int getGretestId() {
+        return gretestId;
+    }
+
+    public static void setGretestId(int gretestId) {
+        JedisUtil.gretestId = gretestId;
+    }
 }

@@ -31,7 +31,7 @@ public class SearchServiceImpl implements SearchService {
         Jedis jedis=JedisUtil.getConn();
         List<Map<String,String>> list=new ArrayList<>();
         if (!jedis.exists(key))return null;
-        Set<String> set= jedis.zrevrange("all_data_id",pageNo*10+1,pageNo*10+10);
+        Set<String> set= jedis.zrevrange(key,pageNo*10+1,pageNo*10+10);
         for (String id:
              set) {
 
