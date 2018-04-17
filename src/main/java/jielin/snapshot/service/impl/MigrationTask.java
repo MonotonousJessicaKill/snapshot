@@ -61,7 +61,7 @@ public class MigrationTask {
                     String.valueOf(id));
             jedis.zadd(cluster,jedis.zcount(type,0,200000)+1,
                     String.valueOf(id));
-            jedis.zadd("all_data_id",jedis.zcount(
+            jedis.zadd( "all_data_id",jedis.zcount(
                     "all_data_id",0,20000)+1,String.valueOf(id));
             ObjectMapper mapper =new ObjectMapper();
             Map<String,String> map =
