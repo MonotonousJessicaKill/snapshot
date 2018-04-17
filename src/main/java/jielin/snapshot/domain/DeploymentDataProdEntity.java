@@ -35,6 +35,7 @@ public class DeploymentDataProdEntity {
     private String rtoSubmittedBy;
     private String updatedTime;
 
+
     @Id
     @Column(name = "ID", nullable = false)
     public int getId() {

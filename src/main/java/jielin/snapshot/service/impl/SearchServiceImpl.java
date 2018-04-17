@@ -1,47 +1,44 @@
 package jielin.snapshot.service.impl;
 
-import jielin.snapshot.ResultUtil;
-import jielin.snapshot.common.Result;
-import jielin.snapshot.dao.DeploymentDao;
-import jielin.snapshot.domain.DeploymentDataProdEntity;
+
+import com.alibaba.fastjson.JSON;
+import jielin.snapshot.common.JedisUtil;
 import jielin.snapshot.service.SearchService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import redis.clients.jedis.Jedis;
 
-import javax.persistence.criteria.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+/**
+ * redis规则：
+ * 使用zset进行存储id，使用hash存储记录
+ * zset键值采用type，cluster，version
+ */
 @Service
 public class SearchServiceImpl implements SearchService {
-
-    @Autowired
-    private DeploymentDao deploymentDao;
-
     @Override
-    public Result searchDeploymentByTitle(String key, int pageNo) {
-        Page<DeploymentDataProdEntity> page;
-          if ("all".equals(key)){
-              page=deploymentDao.findAll(new PageRequest(pageNo, 10,
-                      new Sort(Sort.Direction.DESC, "id")));
-              return ResultUtil.success(page);
-          }
+    public String searchDeploymentByTitle(String key, int pageNo) {
+        if (key == null){
+                key = "all_data_id";
+        }
+        return searchAll(key,pageNo);
+    }
 
+    private String searchAll(String key, int pageNo) {
+        Jedis jedis=JedisUtil.getConn();
+        List<Map<String,String>> list=new ArrayList<>();
+        if (!jedis.exists(key))return null;
+        Set<String> set= jedis.zrevrange("all_data_id",pageNo*10+1,pageNo*10+10);
+        for (String id:
+             set) {
 
-         page = deploymentDao.findAll(new Specification<DeploymentDataProdEntity>() {
-            @Override
-            public Predicate toPredicate(Root<DeploymentDataProdEntity> root,
-                                         CriteriaQuery<?> criteriaQuery,
-                                         CriteriaBuilder criteriaBuilder) {
-
-                Predicate like = criteriaBuilder.like(root.get("title").as(String.class), "%" + key + "%");
-                criteriaQuery.where(like);
-                return null;
-            }
-        }, new PageRequest(pageNo, 10, new Sort(Sort.Direction.DESC, "id")));
-
-        return ResultUtil.success(page);
+            Map<String,String> m=jedis.hgetAll(id);
+            list.add(m);
+        }
+        JedisUtil.close(jedis);
+        return JSON.toJSONString(list);
     }
 }
