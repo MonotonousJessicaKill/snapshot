@@ -21,21 +21,24 @@ public class PermAspect {
     private final static Logger logger = LoggerFactory.getLogger(PermAspect.class);
     @Autowired
     SuperUser superUser;
+
     @Pointcut("(execution(public * jielin.snapshot.controller.backend.UserManController.*User*(..))) " +
-            "|| (execution(public * jielin.snapshot.controller.backend.NoteController.*Note*(..)))")
+            "|| (execution(public * jielin.snapshot.controller.backend.NoteController.*Note*(..)))" +
+            "|| (execution(public * jielin.snapshot.controller.backend.UtilsController.*(..)))")
     public void loggingIn() {
 
     }
+
     @Before(value = "loggingIn()")
-    public void isLoggedIn(){
-       HttpSession session= ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes())
+    public void isLoggedIn() {
+        HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
                 .getRequest().getSession();
-        Object obj=session.getAttribute("logged");
-        if(obj!=null) {
+        Object obj = session.getAttribute("logged");
+        if (obj != null) {
             boolean logged = (boolean) obj;
             if (logged) {
                 logger.info(session.getAttribute("username") + "already in.");
-                logger.info("site viewed:================================================="+superUser.siteCount++ +"times.");
+                logger.info("site viewed:=================================================" + superUser.siteCount++ + "times.");
                 return;
             }
         }
