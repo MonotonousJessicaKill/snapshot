@@ -21,6 +21,8 @@ import java.util.Map;
 
 @Component
 public class MigrationTask {
+    @Autowired
+    private JedisUtil util;
 
     @Autowired
     private DeploymentDao dao;
@@ -49,7 +51,7 @@ public class MigrationTask {
 
     private void intoRedis(List<DeploymentDataProdEntity> list) {
 
-        Jedis jedis=JedisUtil.getConn();
+        Jedis jedis=util.getConn();
 
         for (DeploymentDataProdEntity d:list
                 ) {
@@ -73,7 +75,7 @@ public class MigrationTask {
         JedisUtil.close(jedis);
     }
 
-    @Scheduled(cron="0 0 7 18 4 * *")
+    @Scheduled(cron="0 0 7 18 4 *")
     public void executeInitRedis(){
         List<DeploymentDataProdEntity> list =
                 dao.findAll(new Sort(Sort.Direction.ASC,"id"));

@@ -1,15 +1,18 @@
 package jielin.snapshot.common;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
-
+@Component
 public class JedisUtil {
     @Autowired
-    private static JedisPool jedisPool;
+    private  JedisPool jedisPool;
+
     private static int gretestId;
 
-    public static Jedis getConn(){
+    public  Jedis getConn(){
+
         return jedisPool.getResource();
     }
     public static void close(Jedis jedis){

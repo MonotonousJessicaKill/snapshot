@@ -4,6 +4,7 @@ package jielin.snapshot.service.impl;
 import com.alibaba.fastjson.JSON;
 import jielin.snapshot.common.JedisUtil;
 import jielin.snapshot.service.SearchService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 
@@ -19,6 +20,10 @@ import java.util.Set;
  */
 @Service
 public class SearchServiceImpl implements SearchService {
+
+    @Autowired
+    private JedisUtil util;
+
     @Override
     public String searchDeploymentByTitle(String key, int pageNo) {
         if (key == null){
@@ -28,7 +33,7 @@ public class SearchServiceImpl implements SearchService {
     }
 
     private String searchAll(String key, int pageNo) {
-        Jedis jedis=JedisUtil.getConn();
+        Jedis jedis=util.getConn();
         List<Map<String,String>> list=new ArrayList<>();
         if (!jedis.exists(key))return null;
         Set<String> set= jedis.zrevrange(key,pageNo*10+1,pageNo*10+10);
