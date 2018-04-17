@@ -8,6 +8,9 @@ import jielin.snapshot.common.ResultEnum;
  */
 public class VisualException extends RuntimeException{
     private int code;
+    public  VisualException(Exception e){
+        super(e);
+    }
     public VisualException(ResultEnum resultEnum){
         super(resultEnum.getMsg());
         this.code=resultEnum.getCode();
