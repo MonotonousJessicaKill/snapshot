@@ -26,7 +26,7 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public String searchDeploymentByTitle(String key, int pageNo) {
-        if (key == null){
+        if ("ALL".equals(key)){
                 key = "all_data_id";
         }
         return searchAll(key,pageNo);
@@ -35,11 +35,10 @@ public class SearchServiceImpl implements SearchService {
     private String searchAll(String key, int pageNo) {
         Jedis jedis=util.getConn();
         List<Map<String,String>> list=new ArrayList<>();
-        if (!jedis.exists(key))return null;
-        Set<String> set= jedis.zrevrange(key,pageNo*10+1,pageNo*10+10);
+        if (!jedis.exists(key))return "";
+        Set<String> set= jedis.zrangeByScore(key,pageNo*10+1,pageNo*10+10);
         for (String id:
              set) {
-
             Map<String,String> m=jedis.hgetAll(id);
             list.add(m);
         }

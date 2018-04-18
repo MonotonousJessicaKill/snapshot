@@ -36,6 +36,7 @@ public class DeploymentDataProdEntity {
     private String updatedTime;
 
 
+
     @Id
     @Column(name = "ID", nullable = false)
     public int getId() {
@@ -316,6 +317,38 @@ public class DeploymentDataProdEntity {
         this.updatedTime = updatedTime;
     }
 
+    public DeploymentMiddleObj toMiddle(){
+        DeploymentMiddleObj obj= new DeploymentMiddleObj();
+        obj.id = ""+this.id;
+        obj.approvedBy = this.approvedBy;
+        obj.buildNumber =this.buildNumber;
+        obj.buildPath = this.buildPath;
+        obj.buildReplicationId = this.buildReplicationId;
+        obj.deploymentRoot = this.deploymentRoot;
+        obj.diEngine =this.diEngine;
+        obj.diguid = this.diguid;
+        obj.effort = this.effort;
+        obj.finishDate=this.finishDate.toString();
+        obj.finisher = this.finisher;
+        obj.location=this.location;
+        obj.parentDeploymentId = this.parentDeploymentId;
+        obj.rtoApprovedBy = this.rtoApprovedBy;
+        obj.rtoid = this.rtoid;
+        obj.rtoSubmittedBy = this.rtoSubmittedBy;
+        obj.serviceTreeGuid=this.serviceTreeGuid;
+        obj.settingsFile = this.settingsFile;
+        obj.startDate = this.startDate.toString();
+        obj.starter=this.starter;
+        obj.submittedBy = this.submittedBy;
+        obj.taskState = this.taskState;
+        obj.templateName = this.templateName;
+        obj.tenantId = this.tenantId;
+        obj.title = this.title;
+        obj.toolset = this.toolset;
+        obj.type = this.type;
+        obj.updatedTime = this.updatedTime;
+        return obj;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

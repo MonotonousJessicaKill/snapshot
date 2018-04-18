@@ -5,8 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 public class SearchDeploymentController {
 
     @Autowired
@@ -14,6 +15,6 @@ public class SearchDeploymentController {
 
     @GetMapping(value = "/search/{key}/{page}")
     public String searchDeployment(@PathVariable("key")String key, @PathVariable("page")int page){
-        return searchService.searchDeploymentByTitle(key,page);
+        return searchService.searchDeploymentByTitle(key.toUpperCase(),page);
     }
 }

@@ -1,9 +1,13 @@
 package jielin.snapshot.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSONPObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jielin.snapshot.common.JedisUtil;
 import jielin.snapshot.dao.DeploymentDao;
 import jielin.snapshot.domain.DeploymentDataProdEntity;
+import jielin.snapshot.domain.DeploymentMiddleObj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
@@ -52,35 +56,38 @@ public class MigrationTask {
     private void intoRedis(List<DeploymentDataProdEntity> list) {
 
         Jedis jedis=util.getConn();
-
+        int newBiggestId = 0;
         for (DeploymentDataProdEntity d:list
                 ) {
-
-            int id = d.getId();
+            DeploymentMiddleObj obj = d.toMiddle();
+            String id =obj.id;
             String type = d.getType();
             String cluster = d.getLocation();
             jedis.zadd(type,jedis.zcount(type,0,200000)+1,
-                    String.valueOf(id));
+                    id);
             jedis.zadd(cluster,jedis.zcount(type,0,200000)+1,
-                    String.valueOf(id));
+                    id);
             jedis.zadd( "all_data_id",jedis.zcount(
-                    "all_data_id",0,20000)+1,String.valueOf(id));
+                    "all_data_id",0,20000)+1,id);
             ObjectMapper mapper =new ObjectMapper();
-            Map<String,String> map =
-                    (Map<String, String>) mapper.convertValue(d, Map.class);
-            jedis.hmset(String.valueOf(id),map);
 
+            Map<String,String > map = mapper.convertValue(obj,Map.class);
+            jedis.hmset(id,map);
+
+            newBiggestId = d.getId();
         }
-
+        JedisUtil.setGretestId(newBiggestId);
         JedisUtil.close(jedis);
     }
 
-    @Scheduled(cron="0 0 7 18 4 *")
+    @Scheduled(cron="0 57 12 18 4 *")
     public void executeInitRedis(){
+        System.out.println("进入init task");
         List<DeploymentDataProdEntity> list =
                 dao.findAll(new Sort(Sort.Direction.ASC,"id"));
-
+        System.out.println("取得数据");
 
         intoRedis(list);
+        System.out.println("存放成功");
     }
 }
