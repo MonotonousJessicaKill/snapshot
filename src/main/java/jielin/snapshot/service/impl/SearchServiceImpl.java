@@ -1,7 +1,6 @@
 package jielin.snapshot.service.impl;
 
 
-import com.alibaba.fastjson.JSON;
 import jielin.snapshot.ResultUtil;
 import jielin.snapshot.common.JedisUtil;
 import jielin.snapshot.common.Result;
@@ -36,9 +35,12 @@ public class SearchServiceImpl implements SearchService {
 
     private Result searchAll(String key, int pageNo) {
         Jedis jedis=util.getConn();
+        long top = jedis.zcount(key,0,200000);
+        long start = top - pageNo*10;
+        long end = top - pageNo*10-9;
         List<Map<String,String>> list=new ArrayList<>();
         if (!jedis.exists(key))return ResultUtil.error("没有查找的key值");
-        Set<String> set= jedis.zrangeByScore(key,pageNo*10+1,pageNo*10+10);
+        Set<String> set= jedis.zrevrangeByScore(key,start,end);
         for (String id:
              set) {
             Map<String,String> m=jedis.hgetAll(id);

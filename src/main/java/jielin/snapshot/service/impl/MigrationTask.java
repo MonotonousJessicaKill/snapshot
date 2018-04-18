@@ -1,8 +1,5 @@
 package jielin.snapshot.service.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.JSONPObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jielin.snapshot.common.JedisUtil;
 import jielin.snapshot.dao.DeploymentDao;
@@ -22,7 +19,6 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 
 @Component
@@ -60,15 +56,16 @@ public class MigrationTask {
 
         Jedis jedis=util.getConn();
         int newBiggestId = 0;
+        DeploymentMiddleObj obj=null;
         for (DeploymentDataProdEntity d:list
                 ) {
-            DeploymentMiddleObj obj = d.toMiddle();
+            obj = d.toMiddle();
             String id =obj.id;
             String type = d.getType();
             String cluster = d.getLocation();
             jedis.zadd(type,jedis.zcount(type,0,200000)+1,
                     id);
-            jedis.zadd(cluster,jedis.zcount(type,0,200000)+1,
+            jedis.zadd(cluster,jedis.zcount(cluster,0,200000)+1,
                     id);
             jedis.zadd( "all_data_id",jedis.zcount(
                     "all_data_id",0,20000)+1,id);
