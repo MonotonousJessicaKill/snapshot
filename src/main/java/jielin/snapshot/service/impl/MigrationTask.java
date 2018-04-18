@@ -8,6 +8,7 @@ import jielin.snapshot.common.JedisUtil;
 import jielin.snapshot.dao.DeploymentDao;
 import jielin.snapshot.domain.DeploymentDataProdEntity;
 import jielin.snapshot.domain.DeploymentMiddleObj;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
@@ -21,10 +22,12 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 
 @Component
 public class MigrationTask {
+    private final static org.slf4j.Logger logger = LoggerFactory.getLogger(MigrationTask.class);
     @Autowired
     private JedisUtil util;
 
@@ -34,7 +37,7 @@ public class MigrationTask {
 
     @Scheduled(cron="0 30 * * * *")
     public void executeDataSyncTask() {
-
+        logger.info("同步mysql新增数据");
 
         List<DeploymentDataProdEntity> list = dao.findAll(new Specification<DeploymentDataProdEntity>() {
             @Override
@@ -50,7 +53,7 @@ public class MigrationTask {
         });
 
         intoRedis(list);
-
+        logger.info("=======数据同步成功=======");
     }
 
     private void intoRedis(List<DeploymentDataProdEntity> list) {
@@ -80,14 +83,17 @@ public class MigrationTask {
         JedisUtil.close(jedis);
     }
 
-    @Scheduled(cron="0 57 12 18 4 *")
+    @Scheduled(cron="0 20 15 18 4 *")
     public void executeInitRedis(){
-        System.out.println("进入init task");
+        logger.info("=========清空redis db======");
+        Jedis jedis =util.getConn();
+        jedis.flushDB();
+        logger.info("=========开始从mysql获取初始数据========");
         List<DeploymentDataProdEntity> list =
                 dao.findAll(new Sort(Sort.Direction.ASC,"id"));
-        System.out.println("取得数据");
+        logger.info("=========获取数据,准备存入redis=========");
 
         intoRedis(list);
-        System.out.println("存放成功");
+        logger.info("==========数据初始拷贝成功============");
     }
 }

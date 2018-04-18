@@ -1,5 +1,7 @@
 package jielin.snapshot.service;
 
+import jielin.snapshot.common.Result;
+
 public interface SearchService {
-    String searchDeploymentByTitle(String key,int page);
+    Result searchDeploymentByTitle(String key, int page);
 }
