@@ -12,6 +12,13 @@ public class ResultUtil {
         result.setMsg(ResultEnum.SUCCESS.getMsg());
         return result;
     }
+    public static Result success(Object data,String msg){
+        Result result=new Result();
+        result.setCode(ResultEnum.SUCCESS.getCode());
+        result.setData(data);
+        result.setMsg(msg);
+        return result;
+    }
     public static Result notFund(){
         Result result=new Result();
         result.setCode(ResultEnum.PRIMARY_ERROR.getCode());

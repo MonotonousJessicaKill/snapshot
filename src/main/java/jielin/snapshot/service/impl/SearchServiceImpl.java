@@ -30,23 +30,41 @@ public class SearchServiceImpl implements SearchService {
         if ("ALL".equals(key)){
                 key = "all_data_id";
         }
-        return searchAll(key,pageNo);
+        Jedis jedis=util.getConn();
+        if (jedis==null){
+            return ResultUtil.error("连接资源不足");
+        }
+        if(key.matches("[0-9]+")){
+            return searchById(key,jedis);
+        }
+        return searchAll(key,pageNo,jedis);
     }
 
-    private Result searchAll(String key, int pageNo) {
-        Jedis jedis=util.getConn();
+    private Result searchById(String key,Jedis jedis) {
+        List<Map<String,String>> list=new ArrayList<>();
+        Map<String,String> map=jedis.hgetAll(key);
+        list.add(map);
+        JedisUtil.close(jedis);
+        return ResultUtil.success(list,1+"");
+    }
+
+    private Result searchAll(String key, int pageNo,Jedis jedis) {
+
         long top = jedis.zcount(key,0,200000);
         long start = top - pageNo*10;
         long end = top - pageNo*10-9;
         List<Map<String,String>> list=new ArrayList<>();
         if (!jedis.exists(key))return ResultUtil.error("没有查找的key值");
-        Set<String> set= jedis.zrevrangeByScore(key,start,end);
+        Set<String> set=
+                jedis.zrevrangeByScore(key,start,end);
         for (String id:
-             set) {
+                set) {
             Map<String,String> m=jedis.hgetAll(id);
             list.add(m);
         }
+
         JedisUtil.close(jedis);
-        return ResultUtil.success(list);
+        return ResultUtil.success(list,(top+1)/10+"");
+
     }
 }

@@ -31,7 +31,7 @@ public class MigrationTask {
     private DeploymentDao dao;
 
 
-    @Scheduled(cron="0 30 * * * *")
+    @Scheduled(cron="0 0,10,20,30,40,50 * * * *")
     public void executeDataSyncTask() {
         logger.info("同步mysql新增数据");
 
@@ -46,29 +46,33 @@ public class MigrationTask {
                 criteriaQuery.where(greaters);
                 return null;
             }
-        });
+        },new Sort(Sort.Direction.ASC,"id"));
 
         intoRedis(list);
         logger.info("=======数据同步成功=======");
     }
 
     private void intoRedis(List<DeploymentDataProdEntity> list) {
-
+        if (list.size()==0){
+            logger.info("===========没有数据更新==========");
+            return;
+        }
+        logger.info("========更新数据条数："+list.size());
         Jedis jedis=util.getConn();
-        int newBiggestId = 0;
+        int newBiggestId = JedisUtil.getGretestId();
         DeploymentMiddleObj obj=null;
         for (DeploymentDataProdEntity d:list
                 ) {
             obj = d.toMiddle();
             String id =obj.id;
-            String type = d.getType();
+            String type = d.getType().toUpperCase();
             String cluster = d.getLocation();
             jedis.zadd(type,jedis.zcount(type,0,200000)+1,
                     id);
             jedis.zadd(cluster,jedis.zcount(cluster,0,200000)+1,
                     id);
             jedis.zadd( "all_data_id",jedis.zcount(
-                    "all_data_id",0,20000)+1,id);
+                    "all_data_id",0,200000)+1,id);
             ObjectMapper mapper =new ObjectMapper();
 
             Map<String,String > map = mapper.convertValue(obj,Map.class);
@@ -80,7 +84,7 @@ public class MigrationTask {
         JedisUtil.close(jedis);
     }
 
-    @Scheduled(cron="0 20 15 18 4 *")
+    @Scheduled(cron="0 20 9 21 4 *")
     public void executeInitRedis(){
         logger.info("=========清空redis db======");
         Jedis jedis =util.getConn();

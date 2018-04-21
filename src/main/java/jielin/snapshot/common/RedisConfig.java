@@ -28,6 +28,12 @@ public class RedisConfig extends CachingConfigurerSupport {
     @Value("${spring.redis.pool.max-wait}")
     private long maxWaitMillis;
 
+    @Value("${spring.redis.pool.min-idle}")
+    private int minIdle;
+
+    @Value("${spring.redis.pool.max-active}")
+    private int maxActive;
+
 //    @Value("${spring.redis.password}")
 //    private String password;
 
@@ -37,10 +43,12 @@ public class RedisConfig extends CachingConfigurerSupport {
         System.out.println("redis地址：" + host + ":" + port);
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
         jedisPoolConfig.setMaxIdle(maxIdle);
+        jedisPoolConfig.setMinIdle(minIdle);
         jedisPoolConfig.setMaxWaitMillis(maxWaitMillis);
+        jedisPoolConfig.setMaxTotal(maxActive);
 
         JedisPool jedisPool = new JedisPool(jedisPoolConfig, host, port, timeout);
-        System.out.println(jedisPool);
+        System.out.println("============初始化jedispool成功========");
         return jedisPool;
     }
 }
