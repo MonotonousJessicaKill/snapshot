@@ -66,7 +66,8 @@ public class MigrationTask {
             obj = d.toMiddle();
             String id =obj.id;
             String type = d.getType().toUpperCase();
-            String cluster = d.getLocation();
+            //****************
+            String cluster = d.getLocation().toUpperCase();
             jedis.zadd(type,jedis.zcount(type,0,200000)+1,
                     id);
             jedis.zadd(cluster,jedis.zcount(cluster,0,200000)+1,
@@ -84,7 +85,7 @@ public class MigrationTask {
         JedisUtil.close(jedis);
     }
 
-    @Scheduled(cron="0 20 9 21 4 *")
+    @Scheduled(cron="0 27 10 21 4 *")
     public void executeInitRedis(){
         logger.info("=========清空redis db======");
         Jedis jedis =util.getConn();
