@@ -47,6 +47,7 @@ public class RedisConfig extends CachingConfigurerSupport {
         jedisPoolConfig.setMaxWaitMillis(maxWaitMillis);
         jedisPoolConfig.setMaxTotal(maxActive);
 
+
         JedisPool jedisPool = new JedisPool(jedisPoolConfig, host, port, timeout);
         System.out.println("============初始化jedispool成功========");
         return jedisPool;

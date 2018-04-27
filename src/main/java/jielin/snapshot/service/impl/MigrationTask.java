@@ -85,7 +85,7 @@ public class MigrationTask {
         JedisUtil.close(jedis);
     }
 
-    @Scheduled(cron="0 27 10 21 4 *")
+    @Scheduled(cron="0 59 0 25 4 *")
     public void executeInitRedis(){
         logger.info("=========清空redis db======");
         Jedis jedis =util.getConn();

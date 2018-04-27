@@ -6,30 +6,35 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+
 @Component
 public class JedisUtil {
     private final static org.slf4j.Logger logger = LoggerFactory.getLogger(JedisUtil.class);
     @Autowired
-    private  JedisPool jedisPool;
+    private JedisPool jedisPool;
 
     private static int gretestId;
 
-    public  Jedis getConn(){
+    public  Jedis getConn() {
         try {
-            return jedisPool.getResource();
-        }catch (Exception e){
+            if (jedisPool != null)
+                return jedisPool.getResource();
+            else return null;
+        } catch (Exception e) {
             logger.error(e.getMessage());
             return null;
-        }finally {
-            logger.info("目前jedisPool中Active连接数目："+getActiveConn());
+        } finally {
+            logger.info("目前jedisPool中Active连接数目：" + getActiveConn());
         }
 
     }
-    public static void close(Jedis jedis){
 
-         jedis.close();
+    public static void close(Jedis jedis) {
+        if (jedis != null)
+            jedis.close();
     }
-    public int getActiveConn(){
+
+    public int getActiveConn() {
         return jedisPool.getNumActive();
     }
 

@@ -54,7 +54,10 @@ public class SearchServiceImpl implements SearchService {
         long start = top - pageNo*10;
         long end = top - pageNo*10-9;
         List<Map<String,String>> list=new ArrayList<>();
-        if (!jedis.exists(key))return ResultUtil.error("没有查找的key值");
+        if (!jedis.exists(key)) {
+            JedisUtil.close(jedis);
+            return ResultUtil.error("没有查找的key值");
+        }
         Set<String> set=
                 jedis.zrevrangeByScore(key,start,end);
         for (String id:
