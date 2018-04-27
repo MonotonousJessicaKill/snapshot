@@ -50,11 +50,12 @@ public class MigrationTask {
                                          CriteriaBuilder criteriaBuilder) {
 
 
-                        criteriaBuilder.greaterThan(root.get("id"),
+                Predicate greaters=      criteriaBuilder.greaterThan(root.get("id"),
                                 JedisUtil.getGretestId());
-                Predicate greaters =  criteriaBuilder.and(criteriaBuilder.notLike(root.get("title"),
+
+                Predicate notLikes =  criteriaBuilder.and(criteriaBuilder.notLike(root.get("title"),
                         "%HelloWorld%"));
-               criteriaQuery.where(greaters);
+               criteriaQuery.where(greaters,notLikes);
 
                 return null;
             }
@@ -70,35 +71,54 @@ public class MigrationTask {
         executeUpdateStatus(jedis,"PENDING");
         executeUpdateStatus(jedis,"DEPLOYING");
         executeUpdateStatus(jedis,"BLOCKED");
+        executeUpdateStatus(jedis,"AWAITING DEPLOYMENT");
         logger.info("===============部署状态更新结束==========");
-        JedisUtil.close(jedis);
     }
 
     private void executeUpdateStatus(Jedis jedis, String stateInRedis) {
         Set<String> set =jedis.zrange(stateInRedis,0,200000);
+        int count = 0;
         for (String id: set
                 ) {
             DeploymentDataProdEntity entity = dao.findOne(Integer.parseInt(id));
             DeploymentMiddleObj obj = entity.toMiddle();
             String newState = entity.getTaskState();
             if (!(newState.toUpperCase()).equals(stateInRedis)){
-                jedis.zadd(newState.toUpperCase(),jedis.zcount(newState,0,200000)+1,
+                jedis.zadd(newState.toUpperCase(),jedis.zcount(newState.toUpperCase(),0,200000)+1,
                         id);
                 jedis.zrem(stateInRedis,id);
-                ObjectMapper mapper =new ObjectMapper();
 
-                Map<String,String > map = mapper.convertValue(obj,Map.class);
-                jedis.hmset(id,map);
+                jedis.hset(id,"taskState",newState);
+                count++;
             }
         }
+        if (count>0){
+            logger.info("==========="+stateInRedis+"数据已经更新："+count+"条===========");
+            rerankStateSet(stateInRedis,jedis);
+        }else {
+            JedisUtil.close(jedis);
+        }
+
+    }
+
+    private void rerankStateSet(String stateInRedis, Jedis jedis) {
+        Set<String> set =jedis.zrange(stateInRedis,0,200000);
+        jedis.zremrangeByScore(stateInRedis,0,200000);
+        for (String id:set
+             ) {
+            jedis.zadd(stateInRedis,jedis.zcount(stateInRedis,0,200000)+1,
+                    id);
+        }
+        JedisUtil.close(jedis);
+
     }
 
     private void intoRedis(List<DeploymentDataProdEntity> list,Jedis jedis) {
         if (list.size()==0){
-            logger.info("===========没有数据更新==========");
+            logger.info("===========没有新增部署==========");
             return;
         }
-        logger.info("========待数据条数："+list.size());
+        logger.info("========待新增数据条数："+list.size());
 
         int newBiggestId = JedisUtil.getGretestId();
         DeploymentMiddleObj obj=null;

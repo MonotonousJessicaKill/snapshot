@@ -13,7 +13,7 @@ public class ScriptServiceImpl implements jielin.snapshot.service.ScriptService{
 
     @Override
     public Result runScript(String scriptName) {
-        String command = "powershell.exe D:/ScriptsUtils/" + scriptName+".ps1";
+        String command = "powershell.exe E:/ScriptsUtils/" + scriptName+".ps1";
         Process process = null;
         try {
             process = Runtime.getRuntime().exec(command);
