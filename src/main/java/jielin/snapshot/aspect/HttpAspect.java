@@ -12,6 +12,11 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * @Author: jielin.wu wu.jielin@oe.21vianet.com
+ * @CreateTime: 2018/4/27
+ * Description:
+ */
 @Aspect
 @Component
 public class HttpAspect {
