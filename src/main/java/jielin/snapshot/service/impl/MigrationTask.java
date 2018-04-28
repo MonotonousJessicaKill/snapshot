@@ -73,6 +73,7 @@ public class MigrationTask {
         executeUpdateStatus(jedis,"BLOCKED");
         executeUpdateStatus(jedis,"AWAITING DEPLOYMENT");
         logger.info("===============部署状态更新结束==========");
+        JedisUtil.close(jedis);
     }
 
     private void executeUpdateStatus(Jedis jedis, String stateInRedis) {
@@ -95,8 +96,6 @@ public class MigrationTask {
         if (count>0){
             logger.info("==========="+stateInRedis+"数据已经更新："+count+"条===========");
             rerankStateSet(stateInRedis,jedis);
-        }else {
-            JedisUtil.close(jedis);
         }
 
     }
@@ -109,7 +108,6 @@ public class MigrationTask {
             jedis.zadd(stateInRedis,jedis.zcount(stateInRedis,0,200000)+1,
                     id);
         }
-        JedisUtil.close(jedis);
 
     }
 
