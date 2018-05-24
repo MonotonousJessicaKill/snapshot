@@ -62,6 +62,7 @@ public class MigrationTask {
         },new Sort(Sort.Direction.ASC,"id"));
 
         intoRedis(list,jedis);
+        JedisUtil.close(jedis);
         logger.info("=======数据同步成功=======");
     }
     @Scheduled(cron="0 5,15,25,35,45,55 * * * *")
@@ -89,7 +90,9 @@ public class MigrationTask {
                         id);
                 jedis.zrem(stateInRedis,id);
 
-                jedis.hset(id,"taskState",newState);
+                ObjectMapper mapper=new ObjectMapper();
+                Map<String,String> map = mapper.convertValue(obj,Map.class);
+                jedis.hmset(id,map);
                 count++;
             }
         }
@@ -145,6 +148,5 @@ public class MigrationTask {
             newBiggestId = d.getId();
         }
         JedisUtil.setGretestId(newBiggestId);
-        JedisUtil.close(jedis);
     }
 }
